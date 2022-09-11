@@ -7,6 +7,7 @@ import { CardList } from '../components/CardList';
 import { api } from '../services/api';
 import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
+import { useEffect } from 'react';
 
 interface Data{
   pages: {
@@ -25,8 +26,8 @@ export default function Home(): JSX.Element {
   } = useInfiniteQuery(
     'images',
     // TODO AXIOS REQUEST WITH PARAM
-    ({pageParam = null}) => {
-      const data = api.get('/api/images', {params: {after: pageParam}});
+    async ({pageParam = null}) => {
+      const data = await api.get('/api/images', {params: {after: pageParam}});
       return data;
     }
     ,
@@ -40,9 +41,16 @@ export default function Home(): JSX.Element {
 
   );
 
-  const formattedData = useMemo(() => {
-    console.log(data)
-    return data
+  useEffect(()=>{
+    
+  }, [isLoading])
+  const formattedData = useMemo(async() => {
+    console.log(data);
+    const myData = await data;
+
+    return myData.pages.map(page => {
+      return page.data;
+    }).flat()
   
   }, [data]);
 
