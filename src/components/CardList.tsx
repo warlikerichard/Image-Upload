@@ -23,6 +23,9 @@ export function CardList({ cards }: CardsProps): JSX.Element {
   // TODO SELECTED IMAGE URL STATE
 
   // TODO FUNCTION HANDLE VIEW IMAGE
+  function handleViewImage(){
+
+  }
 
   return (
     <>
@@ -30,7 +33,7 @@ export function CardList({ cards }: CardsProps): JSX.Element {
         {cards.map(card => {
           return <Card data={card} viewImage={(url) => {
 
-          }} />
+          }} key={card.url}/>
         })}
       </SimpleGrid>
       

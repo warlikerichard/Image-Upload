@@ -41,14 +41,10 @@ export default function Home(): JSX.Element {
 
   );
 
-  useEffect(()=>{
-    
-  }, [isLoading])
-  const formattedData = useMemo(async() => {
+  const formattedData = useMemo(() => {
     console.log(data);
-    const myData = await data;
 
-    return myData.pages.map(page => {
+    return data.pages.map(page => {
       return page.data;
     }).flat()
   
