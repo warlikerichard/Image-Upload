@@ -7,14 +7,7 @@ import { CardList } from '../components/CardList';
 import { api } from '../services/api';
 import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
-import { useEffect } from 'react';
 
-interface Data{
-  pages: {
-    title, description, url, id: string;
-    ts: number;
-  }[]
-}
 export default function Home(): JSX.Element {
   const {
     data,
@@ -27,26 +20,23 @@ export default function Home(): JSX.Element {
     'images',
     // TODO AXIOS REQUEST WITH PARAM
     async ({pageParam = null}) => {
-      const data = await api.get('/api/images', {params: {after: pageParam}});
-      return data;
+      const data = await api.get('/api/images', {params: {after: pageParam}})
+      .then(result => result);
+      return data.data;
     }
     ,
     // TODO GET AND RETURN NEXT PAGE PARAM
     {
       getNextPageParam: (lastRequestResult) => {
-        const {data} = lastRequestResult;
-        return data.after? data.after : null;
+        return lastRequestResult.after? lastRequestResult.after : null;
       }
     }
 
   );
-
   const formattedData = useMemo(() => {
-    console.log(data);
-
-    return data.pages.map(page => {
+    return isLoading ? [] : data.pages.map(page => {
       return page.data;
-    }).flat()
+    }).flat();
   
   }, [data]);
 
